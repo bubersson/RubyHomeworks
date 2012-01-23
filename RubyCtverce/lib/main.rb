@@ -1,6 +1,5 @@
 
-
 require_relative "squares"
 
-parseInput()
+parse_input()
 

@@ -39,10 +39,6 @@ module Pentomino
         pointme << [coord[1].to_i, coord[0].to_i]                        
       end
       
-      
-      
-      
-      pieces << Piece.new(name,pointsn)
       pieces << Piece.new(name,pointss)
       pieces << Piece.new(name,pointsw)
       pieces << Piece.new(name,pointse)
@@ -50,11 +46,9 @@ module Pentomino
       pieces << Piece.new(name,pointms)
       pieces << Piece.new(name,pointmw)
       pieces << Piece.new(name,pointme)      
+      pieces << Piece.new(name,pointsn)
       
-         
-      
-      
-         
+                  
       i=0
       while(i<pieces.size) do
         j = i+1

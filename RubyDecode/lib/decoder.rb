@@ -4,10 +4,12 @@
 # use as <tt>d = Decoder.new(text)</tt>
 class Decoder
    
+  # Class decoder constructor
   def initialize(text) 
     @text = text
   end
   
+  # In decode first do frequency analysis ant then decode input text
   def decode()
     shift = frequency(@text)
     @text.each_char { |c| print( (c.ord+shift).chr) }  
@@ -32,8 +34,7 @@ def loadfile(file)
   d.decode()
 end
 
-file = "in9.txt"    
-#loadfile(file)
+
 
 
 

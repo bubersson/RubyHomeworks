@@ -1,22 +1,17 @@
 
-
-# obsah ctvercu
-#Zadejte x-ovou souradnici stredu prvniho ctverce: 0
-#Zadejte y-ovou souradnici stredu prvniho ctverce: 0
-#Zadejte delku hrany druheho ctverce: 2
-#Zadejte x-ovou souradnici stredu druheho ctverce: 2
-#Zadejte y-ovou souradnici stredu druheho ctverce: 2
-#Obsah sjednoceni dvou ctvercu je 19.
-
-
+#= Main square class
 class Square 
   attr_accessor :s, :x, :y 
+  
+  # Constructor
   def initialize(s,x,y)    
     @s=s
     @x=x
     @y=y
   end
   
+  
+  # Return sum of self square overlapped with sq
   def sum_area(sq)    # a = lokal, b = sq
     x_d=(sq.x - @x).abs  
     y_d=(sq.y - @y).abs    
@@ -30,31 +25,37 @@ class Square
 end
 
 
-def parseInput
-  print "Zadejte delku hrany prvniho ctverce: "
-  sa = gets.chomp.to_f
-  print "Zadejte x-ovou souradnici stredu prvniho ctverce: "
-  xa = gets.chomp.to_f
-  print "Zadejte y-ovou souradnici stredu prvniho ctverce: "
-  ya = gets.chomp.to_f  
+def parse_input  
+  begin
+    print "Zadejte delku hrany prvniho ctverce: "
+    sa = Float(gets)
+    print "Zadejte x-ovou souradnici stredu prvniho ctverce: "
+    xa = Float(gets)
+    print "Zadejte y-ovou souradnici stredu prvniho ctverce: "
+    ya = Float(gets) 
   
-  a = Square.new(sa,xa,ya)  
+    print "Zadejte delku hrany druheho ctverce: "
+    sb = Float(gets)
+    print "Zadejte x-ovou souradnici stredu druheho ctverce: "
+    xb = Float(gets)
+    print "Zadejte y-ovou souradnici stredu druheho ctverce: "
+    yb = Float(gets)
+    
+    a = Square.new(sa,xa,ya)  
   
-  print "Zadejte delku hrany druheho ctverce: "
-  sb = gets.chomp.to_f
-  print "Zadejte x-ovou souradnici stredu druheho ctverce: "
-  xb = gets.chomp.to_f
-  print "Zadejte y-ovou souradnici stredu druheho ctverce: "
-  yb = gets.chomp.to_f
+    b= Square.new(sb,xb,yb)
   
-  b= Square.new(sb,xb,yb)
-  
-  o = a.sum_area(b)
-  if o < 0 
-    puts "Ctverce se ani nedotykaji."  
-  else
-    puts "Obsah sjednoceni dvou ctvercu je "+ o.to_s() + "."
+    o = a.sum_area(b)
+    if o < 0 
+      puts "Ctverce se ani nedotykaji."  
+    else
+      puts "Obsah sjednoceni dvou ctvercu je "+ o.to_s() + "."
+    end
+  rescue StandardError
+    print "Spatny vstup."    
   end
+  
+ 
 end
 
 

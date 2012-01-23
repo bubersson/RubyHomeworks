@@ -7,6 +7,8 @@ require 'test/unit'
 
 describe Square do  
 
+  
+  # Tests of computation correctness
   it "should sum area of two squares with same 1point corner" do
     a = Square.new(2,0,0)
     b =  Square.new(2,1,1)    
