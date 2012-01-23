@@ -1,7 +1,7 @@
 
 require_relative "coverage"
 
-parseInput()
+
 
 # Parse input from stdin and then
 def parse_input
@@ -30,7 +30,7 @@ def parse_input
       #p a
     end 
     
-    t = Test.new(m, lines)
+    t = Coverage.new(m, lines)
     tests << t
     
     gets
@@ -43,7 +43,7 @@ def parse_input
 end
 
 
-
-
-
 parse_input()
+
+
+

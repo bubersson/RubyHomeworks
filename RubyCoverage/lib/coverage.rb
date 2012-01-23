@@ -15,7 +15,7 @@ end
 
 
 # Cover segment [0,M]
-class Test
+class Coverage
   attr_accessor :m, :lines
   
   def initialize(m, lines)
@@ -24,11 +24,10 @@ class Test
   end
   
   
-  # Find
+  # Find solution
   def solve    
     puts ""
-    #puts "Started solving - M: " + m.to_s
-    #puts @lines.count 
+    #puts "Started solving - M: " + m.to_s    
     position = 0 # starting position in [0,M]
     result = []
     count = 0
@@ -78,12 +77,11 @@ class Test
     # Is there solution?
     if max_r < @m
       puts "0"
-    else 
-      #print results
+      return "0"
+    else       
       puts count.to_s
       result.each { |i| puts i  }      
-    end   
-    
+    end           
+    result.insert(0, count.to_s)
   end  
-  
 end

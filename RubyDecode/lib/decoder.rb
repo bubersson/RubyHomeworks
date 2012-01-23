@@ -23,7 +23,7 @@ class Decoder
 
 end
 
-
+# First Load file and then decode it
 def loadfile(file)
   text = File.open(file , "r" ) { | f |
     f.read
