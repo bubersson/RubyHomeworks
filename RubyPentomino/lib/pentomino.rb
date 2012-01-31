@@ -67,86 +67,31 @@ module Pentomino
       
       puts "#{pieces.count} #{name}"
       @act_desk.pieces.concat(pieces)
-      
+      pieces
     end
   
     
     
-    
-    def add_next_piece(desk, piece)                  
-      #puts "x_min #{piece.x_min}, y_min #{piece.y_min}, x_max #{piece.x_max}, y_max #{piece.y_max}"
-      toreturn = nil
-      tc = [0,0]
-      max_f= 0      
-      
+    #= Adding next piece
+    # Try to add piece to desk
+    # and check whether it will work later
+    def add_next_piece(desk, piece)                        
       piece.y_max.upto(@height-piece.y_min) do |y| # bacha na to, že je zkurveně obráceně
-        #return false if desk.too_free?(y)
-        
         piece.x_min.upto(@width-1-piece.x_max) do |x|
-          
-          if piece.name == "A"  
-            #puts "X:#{x},Y:#{y}"
-          end
-          
           if desk.fits?(piece,x,y)
-            
-            #puts "x_min #{piece.x_min}, y_min #{piece.y_min}, x_max #{piece.x_max}, y_max #{piece.y_max}" if piece.name=="X"
-            
-            
             desk.insert_piece(piece,x,y)      
-            desk.used << piece.name
-            return false if desk.too_free?(y)
-            return true
-            #
-#            test = desk.clone
-#            test.insert_piece(piece,x,y)
-#            if !test.too_free?(y)              
-#              toreturn = piece
-#              tc = [x,y]              
-#            end
-#            
-            
-            
-            # return true
-            #print("Inserted fit: #{piece.name}\n")
+            desk.used << piece.name            
+            return !desk.too_free?(y)           
           end        
         end
       end
-      if toreturn
-        desk.insert_piece(toreturn,tc[0],tc[1])
-        desk.used << toreturn.name
-        return true          
-      else return false
-      end
-      
-      #return false if desk.too_free?(y)
-
-      
-      #print("Not fit: #{piece.name}\n")
-      #puts "x_min #{piece.x_min}, y_min #{piece.y_min}, x_max #{piece.x_max}, y_max #{piece.y_max}"
-      
-      return false
+      return false      
     end
     
-    
-        
-    def get_best(open)
-      best_index = 0# open.count-1
-      best_fitness = 0
-      for i in 0...open.count
-        new_fitness =open[i].get_fitness
-        if  new_fitness > best_fitness
-          best_fitness = new_fitness
-          best_index = i
-        end
-      end            
-      return open.delete_at(best_index)
-    end
     
     # DFS traverse
     def find_solution 
-      puts "Finding solution ..."            
-      
+      puts "Finding solution ..."                  
       
       #print_pieces      
       open = []
@@ -164,46 +109,29 @@ module Pentomino
         if @act_desk.is_solution?
           puts "found solution"
           p @act_desk
-          return
+          return true
         else                
-          while @act_desk.pieces.size > 0 
-            #puts @act_desk.pieces.size
-            
-            
+          while @act_desk.pieces.size > 0             
             piece = @act_desk.pieces.pop            
-            
-            
-            if !@act_desk.used.include?(piece.name) #&& !@act_desk.used!piece.index.include?(piece)
-              
-              desk_clone = @act_desk.clone               
-              
-              if (add_next_piece(@act_desk,piece))                
-                #if (add_next_piece(desk_clone,piece))
+            if !@act_desk.used.include?(piece.name) #&& !@act_desk.used!piece.index.include?(piece)              
+              desk_clone = @act_desk.clone                             
+              if (add_next_piece(@act_desk,piece))                                
                 open.push(desk_clone)                
+                if @act_desk.is_solution?
+                  puts "found solution"
+                  p @act_desk
+                  return true
+                end
               else                 
                 @act_desk = desk_clone
               end
-              p @act_desk  if @act_desk.counter % 10000 == 0
-                
-              if @act_desk.is_solution?
-                puts "found solution"
-                p @act_desk
-                return
-              end
-            
-            end
-            
-            
-            
-          end
-          #p @act_desk
-          # while to jde, pridavej dalsi prvek
-                    
-          
-        end        
-        #@act_desk.get_fitness
+              p @act_desk if @act_desk.counter % 10000 == 0
+            end            
+          end      
+        end      
       end
       @act_desk.to_s
+      false
     end
   
     def to_s
@@ -216,10 +144,8 @@ module Pentomino
         print "--- #{[p.x_max,p.x_min,p.y_max,p.y_min]}\n"      
         print p        
       }
-    end
-  
+    end  
   end
-
 
  
 end

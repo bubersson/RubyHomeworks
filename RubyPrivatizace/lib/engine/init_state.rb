@@ -1,5 +1,5 @@
-# Init State
-#
+#= Init State
+# State for loading data and preparing structures
 class InitialState < StateMachine
 
   def initialize(base)
@@ -14,14 +14,15 @@ class InitialState < StateMachine
     unless @loaded
       required_files.each { |file| print "Requiring file: #{ file }: "; print require(file).to_s+"\n" }
       
-      Block.bootstrap(base)     
+      Block.bootstrap(base)    
+      Score.bootstrap(base)
       
       
       players = []
-      players << Player.new(base, 1, "red")
-      players << Player.new(base, 2, "blue")
-      players << Player.new(base, 3, "green")
-      players << Player.new(base, 4, "yellow")
+      players << Player.new(base, 1, "red", 2,2)
+      players << Player.new(base, 2, "blue",2,13)
+      players << Player.new(base, 3, "green",13,2)
+      players << Player.new(base, 4, "yellow", 13,13)
       base.game_objects[:players] =  players
       
       
@@ -34,8 +35,9 @@ class InitialState < StateMachine
       
       #base.game_objects[:cursor] = Cursor.new(:shape => Shape.random, :location => base.game_objects[:grid].cursor_origin)
       #base.game_objects[:next_shape] = Shape.random
-      #base.game_objects[:score] = Gosu::Font.new(base, Gosu::default_font_name, 40)
-    
+      base.game_objects[:score] = Score.new(:columns => 16, :rows => 16) #Gosu::Font.new(base, Gosu::default_font_name, 30)    
+      
+      
       @loaded = true
     else
       base.state = PlayingState.new(base)
@@ -52,10 +54,10 @@ class InitialState < StateMachine
   def button_up(id)
   end
   
-  protected
-  
-    def required_files      
-      %w{
+  # Files to load during InitState
+  protected  
+  def required_files      
+    %w{
         ./objects/block
         ./objects/grid
         ./objects/row
@@ -64,13 +66,14 @@ class InitialState < StateMachine
         ./objects/shape_location
         ./objects/grid_location
         ./objects/cursor
-      }
-      %w{
+    }
+    %w{
         ./objects/block        
         ./objects/grid
         ./objects/player
         ./objects/privatizace        
-      }
-    end
+        ./objects/score        
+    }
+  end
   
 end

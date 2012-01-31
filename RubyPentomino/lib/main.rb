@@ -39,11 +39,5 @@ read_pieces(file)  do |data|
   pent.create_piece(data)
 end
 
-
-
-
-puts pent
-
 pent.find_solution
 
-puts pent

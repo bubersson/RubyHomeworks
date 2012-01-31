@@ -1,3 +1,5 @@
+#= Main Window Class 
+# Initialization sets size and loads first state
 class GameWindow < Gosu::Window
 
   attr_accessor :state

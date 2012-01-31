@@ -40,8 +40,7 @@ module Pentomino
         0.upto(@width-1) do |x|
           desk[x,y] = @pole[x][y]
         end
-      end
-      
+      end      
       desk.pieces = @pieces.clone
       desk.used = @used.clone      
       return desk
@@ -78,7 +77,7 @@ module Pentomino
       if x+1 < @width && @pole[x+1][y]==0 && @checkPole[x+1][y]!=1
         sum += count_free(x+1,y)
       end
-      if y+1 < @width && @pole[x][y+1]==0  && @checkPole[x][y+1]!=1
+      if y+1 < @height && @pole[x][y+1]==0  && @checkPole[x][y+1]!=1
         sum += count_free(x,y+1)        
       end
       if x-1 >= 0 && @pole[x-1][y]==0  && @checkPole[x-1][y]!=1
@@ -92,7 +91,7 @@ module Pentomino
     end
     
     def too_free?(y)
-      return false if @@counter%2==0
+      #return false if @@counter%2==0
       
       0.upto(@width-1) do |i|
         0.upto(@height-1) do |j|      
@@ -139,33 +138,7 @@ module Pentomino
       return !zero      
     end
     
-    
-    # heuristika s touhle fitness nebude fungovat
-    def get_fitness()
-      return @fitness if @fitness 
-      count=0
-      y_line=0
-      x_line=0
-      0.upto(@width-1) do |x|
-        0.upto(@height-1) do |y|
-          count+=1 if @pole[x][y]==0
-        end
-        y_line+=1 if count == 0
-        count = 0
-      end
-      0.upto(@height-1) do |y|
-        0.upto(@width-1) do |x|
-          count+=1 if @pole[x][y]==0
-        end
-        x_line+=1 if count == 0
-        count = 0
-      end
-           
       
-      @fitness = y_line+x_line
-    end
-    
-    
         
     #Check if selected piece fits at coords
     def fits?(piece, x, y)

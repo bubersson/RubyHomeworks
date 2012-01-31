@@ -1,4 +1,4 @@
-class PlayingState < StateMachine
+class MenuState < StateMachine
 
   def initialize(base)
     super
@@ -9,15 +9,12 @@ class PlayingState < StateMachine
     @players = base.game_objects[:players]
     @active_player = 0
     
-    @pause_overlay = base.game_objects[:pause_overlay]
-    @score = base.game_objects[:score]
-    @paused = false
     
-    
-    #nasledující jsou nepoužité
     @cursor = base.game_objects[:cursor]
-    
+    @score = base.game_objects[:score]
     @current_difficult_level = Gosu::Font.new(base, Gosu::default_font_name, 40)
+    @pause_overlay = base.game_objects[:pause_overlay]
+    @paused = false
   end
   
   def update
@@ -37,8 +34,8 @@ class PlayingState < StateMachine
     return if @paused
     
     @time_since_click ||= Gosu::milliseconds
-    if @time_since_click + 120 < Gosu::milliseconds             
-      reset_locks      
+    if @time_since_click + 200 < Gosu::milliseconds 
+      reset_locks
     end
     
     unless false          
@@ -71,9 +68,7 @@ class PlayingState < StateMachine
         return if key_locked?
         lock_put
         #@players[@active_player].put
-        
         if @grid.add_point(@players[@active_player])
-          @score.update_score(@grid.count_points)
           @active_player = (@active_player+1) % @players.size
         end
       end
@@ -91,9 +86,8 @@ class PlayingState < StateMachine
     @background.draw(0, 0, 0)
     @grid.draw
     @players.each { |p| p.draw  }
-    @score.draw
-    
     #@cursor.draw
+    #@score.draw_rel(@tetris.score.to_s.rjust(6, '0'), 440, 250, 1, 0.5, 0.5, 1, 1, 0xffffffff, :default)
     #@current_difficult_level.draw_rel(@tetris.difficulty_level.to_s, 440, 390, 1, 0.5, 0.5, 1, 1, 0xffffffff, :default)
     #base.game_objects[:next_shape].draw
     @pause_overlay.draw(10, 10, 20) if @paused
@@ -101,7 +95,6 @@ class PlayingState < StateMachine
   
   def button_down(id)
     base.close if id == Gosu::Button::KbEscape
-    @hold = true
   end
   
   def button_up(id)

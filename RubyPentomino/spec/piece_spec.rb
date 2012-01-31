@@ -14,9 +14,9 @@ describe Pentomino::Piece do
   it "should compute bounds correctly" do
     piece = Pentomino::Piece.new("T",[[1,0],[2,0],[1,-1],[1,-2]])     
     piece.x_min.should == 0
-    piece.y_min.should == -2
+    piece.y_min.should == 0
     piece.x_max.should == 2
-    piece.y_max.should == 0
+    piece.y_max.should == 2
   end
   
   it "should normalize correctly" do

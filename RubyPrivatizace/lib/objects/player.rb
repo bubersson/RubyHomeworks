@@ -4,11 +4,11 @@ class Player
   
   attr_accessor :id, :x, :y, :color
   
-  def initialize(window, id, color)
+  def initialize(window, id, color, x, y)
     @image = Gosu::Image.new(window, "media/grid/hrac."+color+".png", false)
     @color = color
     @id = id
-    @x = @y = 4
+    @x, @y = x,y
     @xmax = 16
     @ymax = 16
   end

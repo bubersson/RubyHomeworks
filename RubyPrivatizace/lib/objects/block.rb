@@ -53,7 +53,7 @@ class Block
   
   
   def over_max?(points, x,y, max_x,max_y)
-    max=3
+    max = 3
     max -= 1 if x==0 || x==max_x
     max -= 1 if y==0 || y==max_x
     return points > max

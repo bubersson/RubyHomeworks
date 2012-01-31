@@ -1,5 +1,7 @@
 class Grid
   
+  
+  # Initialize Grid and initialize all blocks
   def initialize(options)
     @width, @height = options[:rows], options[:columns]
     @array = Array.new(@width) { Array.new(@height, 0)}    
@@ -12,7 +14,7 @@ class Grid
   end
   
   
-  
+  # Standard Gosu method for drawing all blocks
   def draw    
     0.upto(@width-1) do |i|
       0.upto(@height-1) do |j|
@@ -23,17 +25,20 @@ class Grid
   end
   
   
-  
+  # Add one point to current block
+  # - only if player is an owner
+  # - run recursive point adding on each block
   def add_point(player)    
     x,y=player.x, player.y    
     if @array[x][y].owner == player.color or @array[x][y].owner == nil
-      @array[x][y].add_point(player.color)      
-      count_points
-      return true
+      @array[x][y].add_point(player.color)            
+      return true  #count_points #true
     end
     false
   end
 
+  
+  
   def count_points
     red = blue = yellow = green =  0    
     0.upto(@width-1) do |i|
@@ -45,6 +50,7 @@ class Grid
       end       
     end
     puts "#{red} #{blue} #{yellow} #{green} "
+    [red,blue,yellow,green]
   end
   
   
