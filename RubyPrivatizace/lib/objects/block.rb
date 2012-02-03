@@ -3,7 +3,7 @@ class Block
   def self.bootstrap(gosu_window)
     @@gosu_window = gosu_window
     
-    colors = %w{red green blue yellow}
+    colors = %w{red blue green yellow}
     @@images = Hash.new
     colors.each { |clr|
       puts clr

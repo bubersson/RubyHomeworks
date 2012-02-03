@@ -15,8 +15,7 @@ class PlayingState < StateMachine
     
     
     #nasledující jsou nepoužité
-    @cursor = base.game_objects[:cursor]
-    
+    @cursor = base.game_objects[:cursor]    
     @current_difficult_level = Gosu::Font.new(base, Gosu::default_font_name, 40)
   end
   
@@ -71,11 +70,10 @@ class PlayingState < StateMachine
         return if key_locked?
         lock_put
         #@players[@active_player].put
-        
-        if @grid.add_point(@players[@active_player])
-          @score.update_score(@grid.count_points)
+        if @grid.add_point(@players[@active_player])          
           @active_player = (@active_player+1) % @players.size
         end
+        @score.update_score(@grid.count_points)
       end
       
     

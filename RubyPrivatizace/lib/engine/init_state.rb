@@ -7,29 +7,25 @@ class InitialState < StateMachine
     @loading_screen = Gosu::Image.new(base, './media/window/loading-screen.png', true)
     @loaded = false
   end
-  
-  
-  
+    
+  # Main initialization loop
   def update
     unless @loaded
       required_files.each { |file| print "Requiring file: #{ file }: "; print require(file).to_s+"\n" }
       
       Block.bootstrap(base)    
       Score.bootstrap(base)
+      Menu.bootstrap(base)
       
       
-      players = []
-      players << Player.new(base, 1, "red", 2,2)
-      players << Player.new(base, 2, "blue",2,13)
-      players << Player.new(base, 3, "green",13,2)
-      players << Player.new(base, 4, "yellow", 13,13)
-      base.game_objects[:players] =  players
-      
+      players = []      
+      base.game_objects[:players] =  players     
       
       base.game_objects[:background] = Gosu::Image.new(base, './media/window/bg.png', true)
+      base.game_objects[:menu_background] = Gosu::Image.new(base, './media/window/menu-bg.png', true)
       base.game_objects[:pause_overlay] = Gosu::Image.new(base, './media/window/paused-overlay.png', true)
-      base.game_objects[:grid] = Grid.new(:columns => 16, :rows => 16)
-      base.game_objects[:privatizace] = Privatizace.new
+      base.game_objects[:grid] = Grid.new(:columns => 16, :rows => 16)      
+      base.game_objects[:menu] = Menu.new
       
 
       
@@ -40,9 +36,10 @@ class InitialState < StateMachine
       
       @loaded = true
     else
-      base.state = PlayingState.new(base)
+      #base.state = PlayingState.new(base)
+      base.state = MenuState.new(base)
     end
-  end
+  end  
   
   def draw
     @loading_screen.draw(0, 0, 0)
@@ -58,21 +55,11 @@ class InitialState < StateMachine
   protected  
   def required_files      
     %w{
-        ./objects/block
-        ./objects/grid
-        ./objects/row
-        ./objects/tetris
-        ./objects/location
-        ./objects/shape_location
-        ./objects/grid_location
-        ./objects/cursor
-    }
-    %w{
         ./objects/block        
         ./objects/grid
         ./objects/player
-        ./objects/privatizace        
         ./objects/score        
+        ./objects/menu        
     }
   end
   

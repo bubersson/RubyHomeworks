@@ -1,96 +1,95 @@
 class MenuState < StateMachine
 
   def initialize(base)
-    super
+    super   
     
-    @grid = base.game_objects[:grid]
     @privatizace = base.game_objects[:privatizace]    
-    @background = base.game_objects[:background]
     @players = base.game_objects[:players]
-    @active_player = 0
+    @background = base.game_objects[:menu_background]
+    #@players = base.game_objects[:players]       
     
+    @menu = base.game_objects[:menu]
     
-    @cursor = base.game_objects[:cursor]
-    @score = base.game_objects[:score]
-    @current_difficult_level = Gosu::Font.new(base, Gosu::default_font_name, 40)
-    @pause_overlay = base.game_objects[:pause_overlay]
-    @paused = false
+    @pause_overlay = base.game_objects[:pause_overlay]    
+    
+    @selected_row = 0
+    @players_to_play = [true,true,false,false]
+    
+    @play = false    
   end
   
   def update
-    if base.button_down?(Gosu::Button::KbSpace)
-      @time_since_pause ||= Gosu::milliseconds
-      return unless @time_since_pause + 100 < Gosu::milliseconds
-      
-      if @paused
-        @paused = false        
-      else
-        @paused = true        
-      end
-      
-      @time_since_pause = nil
-    end
+    unless @play
     
-    return if @paused
-    
-    @time_since_click ||= Gosu::milliseconds
-    if @time_since_click + 200 < Gosu::milliseconds 
-      reset_locks
-    end
-    
-    unless false          
-    
-      if base.button_down?(Gosu::Button::KbLeft) or base.button_down?(Gosu::Button::KbA)
-        return if key_locked?
-        lock_left
-        @players[@active_player].left                
+      @time_since_click ||= Gosu::milliseconds
+      if @time_since_click + 200 < Gosu::milliseconds 
+        reset_locks
       end
     
-      if base.button_down?(Gosu::Button::KbRight)or base.button_down?(Gosu::Button::KbD)
-        return if key_locked?
-        lock_right
-        @players[@active_player].right
-      end
+      unless false          
     
-      if base.button_down?(Gosu::Button::KbDown)or base.button_down?(Gosu::Button::KbS)
-        return if key_locked?
-        lock_down
-        @players[@active_player].down 
-      end
-    
-      if base.button_down?(Gosu::Button::KbUp)or base.button_down?(Gosu::Button::KbW)
-        return if key_locked?
-        lock_up
-        @players[@active_player].up        
-      end
-      
-      if base.button_down?(Gosu::Button::KbReturn) or base.button_down?(Gosu::Button::KbEnter) or base.button_down?(Gosu::Button::KbLeftControl)
-        return if key_locked?
-        lock_put
-        #@players[@active_player].put
-        if @grid.add_point(@players[@active_player])
-          @active_player = (@active_player+1) % @players.size
+        if base.button_down?(Gosu::Button::KbLeft) or base.button_down?(Gosu::Button::KbA)
+          return if key_locked?
+          lock_left
+          @players_to_play[@selected_row] = !@players_to_play[@selected_row]          
         end
-      end
-      
     
-
+        if base.button_down?(Gosu::Button::KbRight)or base.button_down?(Gosu::Button::KbD)
+          return if key_locked?
+          lock_right
+          @players_to_play[@selected_row] = !@players_to_play[@selected_row]
+        end
+    
+        if base.button_down?(Gosu::Button::KbDown)or base.button_down?(Gosu::Button::KbS)
+          return if key_locked?
+          lock_down
+          @selected_row=(@selected_row+1)%5
+        end
+    
+        if base.button_down?(Gosu::Button::KbUp)or base.button_down?(Gosu::Button::KbW)
+          return if key_locked?
+          lock_up
+          @selected_row=(@selected_row-1)%5
+        end
       
-      @grid.reset_row_objects
+        if base.button_down?(Gosu::Button::KbReturn) or base.button_down?(Gosu::Button::KbEnter) or base.button_down?(Gosu::Button::KbLeftControl)
+          return if key_locked?
+          lock_put
+          #@players[@active_player].put
+          if @selected_row == 4 
+            @play = true
+          else
+            @players_to_play[@selected_row] = !@players_to_play[@selected_row]          
+          end
+        end
+        #@grid.reset_row_objects
+      else
+      
+      end
     else
-      
+      @players << Player.new(base, 1, "red", 2,2) if @players_to_play[0]
+      @players << Player.new(base, 2, "blue",2,13) if @players_to_play[1]
+      @players << Player.new(base, 3, "green",13,2) if @players_to_play[2]
+      @players << Player.new(base, 4, "yellow", 13,13) if @players_to_play[3]
+      if @players.length > 1
+        base.state = PlayingState.new(base)
+      else 
+        @players = []
+        @play = false
+      end
     end
   end
   
   def draw
     @background.draw(0, 0, 0)
-    @grid.draw
-    @players.each { |p| p.draw  }
+    @menu.draw(@players_to_play,@selected_row)
+    #@grid.draw
+    #@players.each { |p| p.draw  }
     #@cursor.draw
     #@score.draw_rel(@tetris.score.to_s.rjust(6, '0'), 440, 250, 1, 0.5, 0.5, 1, 1, 0xffffffff, :default)
     #@current_difficult_level.draw_rel(@tetris.difficulty_level.to_s, 440, 390, 1, 0.5, 0.5, 1, 1, 0xffffffff, :default)
     #base.game_objects[:next_shape].draw
-    @pause_overlay.draw(10, 10, 20) if @paused
+    #@pause_overlay.draw(10, 10, 20) if @paused
   end
   
   def button_down(id)

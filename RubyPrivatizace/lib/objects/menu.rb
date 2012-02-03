@@ -1,7 +1,5 @@
-
-
 # Class for managing score and for decidin winner
-class Score
+class Menu
   
   def self.bootstrap(gosu_window)
     @@gosu_window = gosu_window  
@@ -15,29 +13,29 @@ class Score
   end
   
   # Initialize Score and setup fonts
-  def initialize(options)
-    @width, @height = options[:rows], options[:columns]
-    @score = [0,0,0,0]
+  def initialize()
+    
+    
     @labels = []    
     
     @labels.push Gosu::Font.new(@@gosu_window, Gosu::default_font_name, 30)    
     @labels.push Gosu::Font.new(@@gosu_window, Gosu::default_font_name, 30)    
     @labels.push Gosu::Font.new(@@gosu_window, Gosu::default_font_name, 30)    
     @labels.push Gosu::Font.new(@@gosu_window, Gosu::default_font_name, 30)    
+    
+    @start_button = Gosu::Font.new(@@gosu_window, Gosu::default_font_name, 30)    
   end
   
    
   # Standard Gosu method for Score
-  def draw        
+  def draw(players, selected)      
     0.upto(3) do |i|      
-      @labels[i].draw_rel(@score[i].to_s()+" 000 $", 540, 80+i*40, 1, 0.5, 0.5, 1, 1, 0xffffffff, :default)
+      pl = players[i] ? "Player" : "None"
+      cl = selected==i ? 0xff00ffff : 0xffffffff
+      @labels[i].draw_rel(pl, 200, 80+i*40, 1, 0.5, 0.5, 1, 1, cl, :default)
       @@players_icons[i].draw(450, 70+i*40, 1, 1, 1)
     end    
-  end
-  
-  
-  def update_score(arr)
-    @score = arr
+    @start_button.draw_rel("Start Game", 200, 500, 1, 0.5, 0.5, 1, 1, selected==4 ? 0xff00ffff : 0xffffffff, :default)
   end
   
 end

@@ -43,14 +43,14 @@ class Grid
     red = blue = yellow = green =  0    
     0.upto(@width-1) do |i|
       0.upto(@height-1) do |j|
-        red+=1 if @array[i][j].owner == "red"
-        blue+=1 if @array[i][j].owner == "blue"
-        yellow+=1 if @array[i][j].owner == "yellow"
-        green+=1 if @array[i][j].owner == "green"
+        red+=@array[i][j].points if @array[i][j].owner == "red"
+        blue+=@array[i][j].points if @array[i][j].owner == "blue"
+        green+=@array[i][j].points if @array[i][j].owner == "green"
+        yellow+=@array[i][j].points if @array[i][j].owner == "yellow"
       end       
     end
-    puts "#{red} #{blue} #{yellow} #{green} "
-    [red,blue,yellow,green]
+    puts "#{red} #{blue} #{green} #{yellow} "
+    [red,blue,green,yellow]
   end
   
   
