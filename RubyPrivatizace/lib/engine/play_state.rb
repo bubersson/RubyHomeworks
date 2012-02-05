@@ -1,3 +1,6 @@
+
+#= Game state
+# initialize playing state and then start main Game loop
 class PlayingState < StateMachine
 
   def initialize(base)
@@ -7,10 +10,12 @@ class PlayingState < StateMachine
     @privatizace = base.game_objects[:privatizace]    
     @background = base.game_objects[:background]
     @players = base.game_objects[:players]
+    @playing = base.game_objects[:playing]
     @active_player = 0
     
     @pause_overlay = base.game_objects[:pause_overlay]
     @score = base.game_objects[:score]
+    @score.set_players(@players, @playing)
     @paused = false
     
     
@@ -71,13 +76,11 @@ class PlayingState < StateMachine
         lock_put
         #@players[@active_player].put
         if @grid.add_point(@players[@active_player])          
-          @active_player = (@active_player+1) % @players.size
+          @score.update_score(@grid.count_points)
+          @score.check_winner
+          @active_player = (@active_player+1) % @players.size          
         end
-        @score.update_score(@grid.count_points)
       end
-      
-    
-
       
       @grid.reset_row_objects
     else

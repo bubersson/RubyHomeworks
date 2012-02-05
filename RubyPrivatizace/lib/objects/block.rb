@@ -1,29 +1,30 @@
+#= Class Block
+# single block with one image
 class Block
   
+  # statically initialize images
   def self.bootstrap(gosu_window)
     @@gosu_window = gosu_window
-    
+    return if not gosu_window
     colors = %w{red blue green yellow}
     @@images = Hash.new
-    colors.each { |clr|
-      puts clr
-      5.times { |i|
-        puts i
+    colors.each { |clr|      
+      5.times { |i|        
         @@images[clr+i.to_s] = Gosu::Image.new(@@gosu_window, 'media/grid/'+i.to_s+'.'+clr+'.png', true) 
       }      
     }
   end
   
   
-  attr_reader :points, :owner
+  attr_reader :points, :owner, :x, :y
   
   def initialize(x,y, array)
-    @image = Gosu::Image.new(@@gosu_window, 'media/grid/pole.png', true)
+    @image = Gosu::Image.new(@@gosu_window, 'media/grid/pole.png', true) if @@gosu_window
     @x, @y = x, y    
     @points = 0
     @owner = nil
     @array = array
-    @width =16
+    @width = 16
     @height = 16
   end
   
@@ -51,7 +52,7 @@ class Block
     end
   end
   
-  
+  # Does block need to be expanded?
   def over_max?(points, x,y, max_x,max_y)
     max = 3
     max -= 1 if x==0 || x==max_x

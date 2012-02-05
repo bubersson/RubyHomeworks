@@ -1,6 +1,7 @@
 # Class for managing score and for decidin winner
 class Menu
   
+  # Statically initialize icons
   def self.bootstrap(gosu_window)
     @@gosu_window = gosu_window  
     
@@ -31,11 +32,11 @@ class Menu
   def draw(players, selected)      
     0.upto(3) do |i|      
       pl = players[i] ? "Player" : "None"
-      cl = selected==i ? 0xff00ffff : 0xffffffff
+      cl = selected==i ? 0xff0000ff : 0xffffffff
       @labels[i].draw_rel(pl, 200, 80+i*40, 1, 0.5, 0.5, 1, 1, cl, :default)
-      @@players_icons[i].draw(450, 70+i*40, 1, 1, 1)
+      @@players_icons[i].draw(400, 70+i*40, 1, 1, 1)
     end    
-    @start_button.draw_rel("Start Game", 200, 500, 1, 0.5, 0.5, 1, 1, selected==4 ? 0xff00ffff : 0xffffffff, :default)
+    @start_button.draw_rel("Start Game", 200, 305, 1, 0.5, 0.5, 1, 1, selected==4 ? 0xff0000ff : 0xffffffff, :default)
   end
   
 end

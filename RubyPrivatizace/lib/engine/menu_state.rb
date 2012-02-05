@@ -1,3 +1,5 @@
+# Menu players selection
+# - select players with keyboard and then press Start game
 class MenuState < StateMachine
 
   def initialize(base)
@@ -67,10 +69,11 @@ class MenuState < StateMachine
       
       end
     else
-      @players << Player.new(base, 1, "red", 2,2) if @players_to_play[0]
-      @players << Player.new(base, 2, "blue",2,13) if @players_to_play[1]
-      @players << Player.new(base, 3, "green",13,2) if @players_to_play[2]
-      @players << Player.new(base, 4, "yellow", 13,13) if @players_to_play[3]
+      @players << Player.new(base, 0, "red", 2,2) if @players_to_play[0]
+      @players << Player.new(base, 1, "blue",2,13) if @players_to_play[1]
+      @players << Player.new(base, 2, "green",13,2) if @players_to_play[2]
+      @players << Player.new(base, 3, "yellow", 13,13) if @players_to_play[3]
+      base.game_objects[:playing] = @players_to_play
       if @players.length > 1
         base.state = PlayingState.new(base)
       else 

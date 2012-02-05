@@ -4,8 +4,7 @@ class Grid
   # Initialize Grid and initialize all blocks
   def initialize(options)
     @width, @height = options[:rows], options[:columns]
-    @array = Array.new(@width) { Array.new(@height, 0)}    
-      
+    @array = Array.new(@width) { Array.new(@height, 0)}          
     0.upto(@width-1) do |i|
       0.upto(@height-1) do |j|
         @array[i][j] = Block.new(i,j, @array);          
@@ -38,7 +37,8 @@ class Grid
   end
 
   
-  
+  # Count number of each player points
+  # - mainly for score displaying
   def count_points
     red = blue = yellow = green =  0    
     0.upto(@width-1) do |i|
@@ -49,7 +49,7 @@ class Grid
         yellow+=@array[i][j].points if @array[i][j].owner == "yellow"
       end       
     end
-    puts "#{red} #{blue} #{green} #{yellow} "
+    # puts "#{red} #{blue} #{green} #{yellow} "
     [red,blue,green,yellow]
   end
   

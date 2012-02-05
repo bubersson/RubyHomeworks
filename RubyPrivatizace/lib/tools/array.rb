@@ -1,3 +1,4 @@
+# Modifikce array - zatím nejsou použity
 class Array
   
   def next_element

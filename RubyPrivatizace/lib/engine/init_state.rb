@@ -31,7 +31,12 @@ class InitialState < StateMachine
       
       #base.game_objects[:cursor] = Cursor.new(:shape => Shape.random, :location => base.game_objects[:grid].cursor_origin)
       #base.game_objects[:next_shape] = Shape.random
-      base.game_objects[:score] = Score.new(:columns => 16, :rows => 16) #Gosu::Font.new(base, Gosu::default_font_name, 30)    
+      labels = []
+      labels.push Gosu::Font.new(base, Gosu::default_font_name, 30)
+      labels.push Gosu::Font.new(base, Gosu::default_font_name, 30)    
+      labels.push Gosu::Font.new(base, Gosu::default_font_name, 30)    
+      labels.push Gosu::Font.new(base, Gosu::default_font_name, 30)    
+      base.game_objects[:score] = Score.new(labels) #Gosu::Font.new(base, Gosu::default_font_name, 30)    
       
       
       @loaded = true
